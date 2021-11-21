@@ -6,11 +6,11 @@ from django.contrib.auth.models import User
 
 
 class Flow(models.Model):
-    startingUser = models.CharField(max_length=50)
-    targettingUser = models.CharField(max_length=50)
+    startingUser =  models.ForeignKey(Participant, on_delete=models.CASCADE)
+    targettingUser =  models.ForeignKey(Participant, on_delete=models.CASCADE)
     focusStartTime = models.DateTimeField(auto_now_add=True)
     focusEndTime = models.DateTimeField(auto_now_add=True)
-    #figure out what else to add 
+
 
 
 
