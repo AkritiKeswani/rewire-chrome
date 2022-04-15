@@ -1,0 +1,16 @@
+{% extends 'admin/base.html' %}
+
+{% load static %}
+
+{% block title %}LifeNest | Admin Panel{% endblock %}
+
+{% block branding %}
+    <h1 id="site-name">
+        <a href="{% url 'admin:index' %}">
+            <img src='{% static 'img/favicon.png' %}' height="100px" width="100px"/>
+            <b>LifeNest Admin</b>
+        </a>
+    </h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

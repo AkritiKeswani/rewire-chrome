@@ -8,7 +8,7 @@
  }
 
  body {
-     background: linear-gradient(45deg, hsl(186, 34%, 50%), #6dd5ed);
+     background: linear-gradient(45deg, #2193b0, #6dd5ed);
      min-height: 100vh
  }
 
@@ -20,7 +20,7 @@
      max-width: 800px;
      margin: 80px auto;
      padding: 30px 45px;
-     box-shadow: 5px 25px 35px #3f27276b
+     box-shadow: 5px 25px 35px #3535356b
  }
 
  .wrapper label {
@@ -69,7 +69,7 @@
      width: 10px;
      height: 10px;
      display: block;
-     background: linear-gradient(45deg, #273539, #75b3c9);
+     background: linear-gradient(45deg, #2193b0, #6dd5ed);
      position: absolute;
      top: 50%;
      left: 50%;

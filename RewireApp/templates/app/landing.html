@@ -1,0 +1,242 @@
+{% extends 'covid/base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <section class="align-items-center" style="margin-top: 20px;">
+        <div class="wrapper rounded bg-white">
+            {% if logged_in %}
+                {% if not verified_phone %}
+                    <div class="alert alert-danger">
+                        <ul>
+                            <li><b>Unverified Phone:&nbsp;</b>You'll have a limited access. <a
+                                    href="{% url 'render_phone_auth' %}">Verify it now.</a></li>
+                        </ul>
+                    </div>
+                {% endif %}
+            {% endif %}
+            <div class="h3">Find Your Resource</div>
+            <p class="text-secondary"><i>Scroll the grid horizontally on mobile screens</i></p>
+            <div class="form">
+                <div id="resource_list_grid" class="ag-theme-alpine" style="width: 100%; height: 100vh;"></div>
+            </div>
+        </div>
+
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Poppins', sans-serif
+            }
+
+            body {
+                background: linear-gradient(45deg, #ba5370, #f4e2d8);
+                min-height: 100vh;
+            }
+
+            body::-webkit-scrollbar {
+                display: none
+            }
+
+            .wrapper {
+                max-width: 95%;
+                margin: 40px auto;
+                padding: 30px 45px;
+                box-shadow: 5px 25px 35px #3535356b
+            }
+
+            .wrapper label {
+                display: block;
+                padding-bottom: 0.2rem
+            }
+
+            .wrapper .form .row {
+                padding: 0.6rem 0
+            }
+
+            .wrapper .form .row .form-control {
+                box-shadow: none
+            }
+
+            .wrapper .form .option {
+                position: relative;
+                padding-left: 20px;
+                cursor: pointer
+            }
+
+            .wrapper .form .option input {
+                opacity: 0
+            }
+
+            .wrapper .form .checkmark {
+                position: absolute;
+                top: 1px;
+                left: 0;
+                height: 20px;
+                width: 20px;
+                border: 1px solid #bbb;
+                border-radius: 50%
+            }
+
+            .wrapper .form .option input:checked ~ .checkmark:after {
+                display: block
+            }
+
+            .wrapper .form .option:hover .checkmark {
+                background: #f3f3f3
+            }
+
+            .wrapper .form .option .checkmark:after {
+                content: "";
+                width: 10px;
+                height: 10px;
+                display: block;
+                background: linear-gradient(45deg, #ba5370, #f4e2d8);
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                border-radius: 50%;
+                transform: translate(-50%, -50%) scale(0);
+                transition: 300ms ease-in-out 0s
+            }
+
+            .wrapper .form .option input[type="radio"]:checked ~ .checkmark {
+                background: #fff;
+                transition: 300ms ease-in-out 0s
+            }
+
+            .wrapper .form .option input[type="radio"]:checked ~ .checkmark:after {
+                transform: translate(-50%, -50%) scale(1)
+            }
+
+            .wrapper .form #resource_list_grid {
+                border-radius: 15px;
+                padding-top: 20px;
+            }
+
+            @media (max-width: 768.5px) {
+                .wrapper {
+                    margin: 30px
+                }
+
+                .wrapper .form .row {
+                    padding: 0
+                }
+            }
+
+            @media (max-width: 400px) {
+                .wrapper {
+                    padding: 25px;
+                    margin: 20px
+                }
+            }
+        </style>
+    </section>
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        //basic information about each column
+        var columnDefs = [
+            {
+                headerName: "Provider",
+                field: "name",
+                filter: "agTextColumnFilter",
+            },
+            {
+                headerName: "State",
+                field: "state",
+            },
+            {
+                headerName: "City",
+                field: "city",
+            },
+            {
+                headerName: "Service",
+                field: "service",
+            },
+            {
+                headerName: "Phone",
+                field: "phone",
+            },
+            {
+                headerName: "Created",
+                field: "last_created",
+                filter: "agDateColumnFilter",
+            },
+            {
+                headerName: "Paid/Free?",
+                field: "price",
+            },
+            {
+                headerName: "Upvotes",
+                field: "upvotes",
+            },
+            {
+                headerName: "Details",
+                field: "details",
+                cellRenderer: function (params) {
+                    let full_url = "/view_service/" + params.value
+                    return '<a href=' + full_url + '>View</a>'
+                }
+            }
+        ];
+
+        let rowData = [
+            {% for service in services %}
+                {
+                    name: "{{ service.provider.full_name }}",
+                    state: "{{ service.provider.state }}",
+                    city: "{{ service.provider.city }}",
+                    service: "{{ service.name }}",
+                    phone: "{{ service.provider.phone }}",
+                    last_created: "{{ service.created }}",
+                    price: "{{ service.price }}",
+                    details: "{{ service.id }}",
+                    upvotes: "{{ service.provider.num_helps }}"
+                },
+            {% endfor %}
+        ];
+
+
+        var gridOptions = {
+            animateRows: true,
+            floatingFilter: true,
+            defaultColDef: {
+                filter: true,
+                sortable: true,
+                resizable: true,
+            },
+            columnDefs: columnDefs,
+            rowData: rowData,
+            onFirstDataRendered: onFirstDataRenderedDesktop
+        }
+
+        function onFirstDataRenderedMobile(params) {
+            params.columnApi.autoSizeAllColumns();
+        }
+
+        function onFirstDataRenderedDesktop(params) {
+            params.api.sizeColumnsToFit();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var eGridDiv = document.querySelector('#resource_list_grid');
+
+            if (window.innerWidth <= 1024) {
+                // mobile
+                gridOptions.onFirstDataRendered = onFirstDataRenderedMobile
+            } else {
+                // dekstop
+                gridOptions.onFirstDataRendered = onFirstDataRenderedDesktop
+            }
+            new agGrid.Grid(eGridDiv, gridOptions);
+        })
+    </script>
+{% endblock %}
+
+

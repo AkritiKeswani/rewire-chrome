@@ -1,0 +1,91 @@
+{% extends 'covid/base.html' %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block header %}
+    <link rel="stylesheet" href='{% static 'css/auth_forms_style.css' %}'/>
+{% endblock %}
+
+{% block content %}
+    <section class="align-items-center" style="margin-top: 20px;">
+        <div class="wrapper rounded bg-white">
+            {% if not verified_phone %}
+                <div class="alert alert-danger">
+                    <ul>
+                        <li><b>Unverified Phone:&nbsp;</b>You'll have a limited access. <a
+                                href="{% url 'render_phone_auth' %}">Verify it now.</a></li>
+                    </ul>
+                </div>
+            {% endif %}
+            <div class="h3">Edit Profile</div>
+            <form class="form" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="form-group col-md-6 mb-0">
+                        {{ creation.first_name|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-6 mb-0">
+                        {{ creation.last_name|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6 mb-0">
+                        {{ participant.state|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-6 mb-0">
+                        {{ participant.city|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3 mb-0">
+                        {{ participant.instagramHandle|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-3 mb-0">
+                        {{ participant.facebookHandle|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-3 mb-0">
+                        {{ participant.twitterHandle|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-3 mb-0">
+                        {{ participant.website|as_crispy_field }}
+                    </div>
+                </div>
+                <button class="btn btn-primary mt-3" type="submit">Update Profile</button>
+            </form>
+            <div class="text-left" style="padding-top: 10px">
+                <p>Need a new password? <a href="{% url 'change_password' %}">Change password.</a></p>
+            </div>
+            <div class="text-left">
+                <p>New phone number? <a href="{% url 'change_phone' %}">Change it now.</a></p>
+            </div>
+            <div class="text-left">
+                <p>Want to erase your data? <a data-bs-toggle="modal" data-bs-target="#deleteModal" href="#deleteModal">Delete
+                    your account.</a></p>
+            </div>
+        </div>
+
+        <!-- DELETE MODAL -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"><b>Delete account</b></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure? This action cannot be reverted. By clicking this button, you're agreeing to the
+                            following:</p>
+                        <p><em>All my information on this platform will be erased. All the resource data associated to
+                            my account will be erased.</em></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a class="btn btn-danger" href="{% url 'delete_user' %}">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+

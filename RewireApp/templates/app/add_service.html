@@ -1,0 +1,56 @@
+{% extends 'covid/base.html' %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block header %}
+    <link rel="stylesheet" href='{% static 'css/auth_forms_style.css' %}'/>
+{% endblock %}
+
+{% block content %}
+    <section class="align-items-center" style="margin-top: 20px;">
+        <div class="wrapper rounded bg-white">
+            <div class="h3">Add Resource</div>
+            <form class="form" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="form-group col-md-6 mb-0">
+                        {{ service.name|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-6 mb-0">
+                        {{ service.price|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12 mb-0">
+                        {{ service.pricing_details|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12 mb-0">
+                        {{ service.additional_details|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6 mb-0">
+                        {{ service.delivery|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12 mb-0">
+                        {{ service.delivery_type|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12 mb-0">
+                        {{ service.delivery_details|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    {{ service.consent|as_crispy_field }}
+                </div>
+                <button class="btn btn-primary mt-3" type="submit">Add Resource</button>
+            </form>
+        </div>
+    </section>
+{% endblock %}

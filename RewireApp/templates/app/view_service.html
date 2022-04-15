@@ -1,0 +1,333 @@
+{% extends 'covid/base.html' %}
+{% load social_share %}
+{% load static %}
+
+{% block header %}
+    <link rel="stylesheet" href='{% static 'css/auth_forms_style.css' %}'/>
+{% endblock %}
+
+{% block content %}
+    <section class="align-items-center" style="margin-top: 20px;">
+        <div class="container">
+            <div class="main-body">
+
+                <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb" class="main-breadcrumb" style="padding-top: 20px;">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">View Resource</li>
+                    </ol>
+                </nav>
+                <!-- /Breadcrumb -->
+
+                {% if logged_in %}
+                    {% if not verified_phone %}
+                        <div class="alert alert-warning">
+                            <ul>
+                                <li><b>Unverified Phone:&nbsp;</b>You'll have a limited access. <a
+                                        href="{% url 'render_phone_auth' %}">Verify it now.</a></li>
+                            </ul>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="alert alert-warning">
+                        <p class="text-black-50 text-left"><b><u>Alert</u>:&emsp;</b>This page has limited functionality
+                            without <a href="{% url 'login' %}">log in</a>.</p>
+                    </div>
+                {% endif %}
+
+                <div class="row gutters-sm">
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex flex-column align-items-center text-center">
+                                    {#                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">#}
+                                    <div class="mt-3">
+                                        <h3><b>Provider Details</b></h3>
+                                        <hr>
+                                        <p class="text-secondary mb-1">{{ instance.provider.full_name }}</p>
+                                        <p class="text-secondary mb-1">{{ instance.provider.phone }}</p>
+                                        <p class="text-secondary mb-1"><a
+                                                href="mailto:{{ instance.provider.user.email }}"
+                                                target="_blank">{{ instance.provider.user.email }}</a></p>
+                                        <p class="text-secondary mb-1">{{ instance.provider.city }}, {{ instance.provider.state }}</p>
+                                        {% if instance.provider.instagramHandle  or instance.provider.facebookHandle or instance.provider.website or instance.provider.twitterHandle %}
+                                            <div class="social-links">
+                                                {% if instance.provider.website %}
+                                                    <a href="{{ instance.provider.website }}" target="_blank"
+                                                       class="bx-sm"><i class="bx bxl-internet-explorer"></i></a>
+                                                {% endif %}
+                                                {% if instance.provider.twitterHandle %}
+                                                    <a href="{{ instance.provider.instagramHandle }}" target="_blank"
+                                                       class="bx-sm"><i class="bx bxl-twitter"></i></a>
+                                                {% endif %}
+                                                {% if instance.provider.instagramHandle %}
+                                                    <a href="{{ instance.provider.instagramHandle }}" target="_blank"
+                                                       class="bx-sm"><i class="bx bxl-instagram"></i></a>
+                                                {% endif %}
+                                                {% if instance.provider.facebookHandle %}
+                                                    <a href="{{ instance.provider.facebookHandle }}" target="_blank"
+                                                       class="bx-sm"><i class="bx bxl-facebook"></i></a>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+
+                                        <hr>
+                                        {% if logged_in %}
+                                            {% if not is_owner %}
+                                                {% if has_voted_help or has_voted_scam %}
+                                                    {% if has_voted_scam %}
+                                                        <p class="text-danger mb-1">You have already marked this service
+                                                            as
+                                                            spam.<a href="{% url 'undo_scam_service' instance.id %}">
+                                                                Undo?</a></p>
+                                                    {% endif %}
+                                                    {% if has_voted_help %}
+                                                        <p class="text-success mb-1">You have already marked this
+                                                            service as
+                                                            helpful.<a href="{% url 'undo_help_service' instance.id %}">
+                                                                Undo?</a></p>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <p class="text-black mb-1" style="padding-bottom: 10px;">Did you
+                                                        find
+                                                        this resource to be authentic?</p>
+                                                    <a href="{% url 'help_service' instance.id %}"
+                                                       class="btn btn-success">Yes,
+                                                        it helped!</a>
+                                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                            data-bs-target="#scamModal">No, it's scam!
+                                                    </button>
+                                                    <hr>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% else %}
+                                            <p class="text-danger mb-1">Please
+                                                <a href="{% url 'login' %}">log in</a> to upvote this resource or mark
+                                                it as a scam.</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mt-3">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-start align-items-center flex-wrap">
+                                    <p class="text-success mb-1">{{ instance.provider.num_helps }} helpful reports
+                                        for {{ instance.provider.user.first_name }}.</p>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-start align-items-center flex-wrap">
+                                    <p class="text-danger mb-1">{{ instance.provider.num_scams }} scam reports
+                                        against {{ instance.provider.user.first_name }}.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Last Modified</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        {{ instance.created }}
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Resource Type</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        {{ instance.name }}
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Paid/Free</h6>
+                                    </div>
+                                    {% ifequal instance.price|stringformat:"s" "FREE" %}
+                                        <div class="col-sm-9 text-secondary text-success">
+                                            <strong>{{ instance.price }}</strong>
+                                        </div>
+                                    {% endifequal %}
+                                    {% ifequal instance.price|stringformat:"s" "PAID" %}
+                                        <div class="col-sm-9 text-secondary text-danger">
+                                            <strong>{{ instance.price }}</strong>
+                                        </div>
+                                    {% endifequal %}
+                                </div>
+                                <hr>
+                                {% ifequal instance.price|stringformat:"s" "PAID" %}
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Pricing Details</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            {{ instance.pricing_details }}
+                                        </div>
+                                    </div>
+                                    <hr>
+                                {% endifequal %}
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Delivery Available</h6>
+                                    </div>
+                                    {% if instance.delivery %}
+                                        <div class="col-sm-9 text-secondary text-success">
+                                            <strong>YES</strong>
+                                        </div>
+                                    {% else %}
+                                        <div class="col-sm-9 text-secondary text-danger">
+                                            <strong>NO</strong>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <hr>
+                                {% if instance.delivery %}
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Delivery Fees</h6>
+                                        </div>
+                                        {% ifequal instance.price|stringformat:"s" "FREE" %}
+                                            <div class="col-sm-9 text-secondary text-success">
+                                                <strong>{{ instance.delivery_type }}</strong>
+                                            </div>
+                                        {% endifequal %}
+                                        {% ifequal instance.price|stringformat:"s" "PAID" %}
+                                            <div class="col-sm-9 text-secondary text-danger">
+                                                <strong>{{ instance.delivery_type }}</strong>
+                                            </div>
+                                        {% endifequal %}
+                                    </div>
+                                    <hr>
+                                    {% ifequal instance.price|stringformat:"s" "PAID" %}
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Delivery Details</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                {{ instance.delivery_details }}
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    {% endifequal %}
+                                {% endif %}
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Additional Details</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        {{ instance.additional_details }}
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="btn-toolbar justify-content-center" role="toolbar"
+                                     aria-label="button toolbar">
+                                    <div class="btn-group" role="group" aria-label="Basic mixed styles example"
+                                         style="padding: 10px;">
+                                        {% if logged_in %}
+                                            {% if is_owner %}
+                                                <a class="btn btn-info "
+                                                   href="{% url 'edit_service' instance.id %}">Edit</a>
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal">Delete
+                                                </button>
+                                            {% endif %}
+                                        {% endif %}
+                                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                                data-bs-target="#shareModal">Share
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SCAM MODAL -->
+                            <div class="modal fade" id="scamModal" tabindex="-1" aria-labelledby="scamModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Mark <b>{{ instance.name }}</b> by
+                                                <b>{{ instance.provider.full_name }} as scam!</b></h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure? By clicking this button, you're agreeing to the
+                                                following:</p>
+                                            <p><em>The information I provide here is correct. I am not trying to abuse
+                                                the provider or platform by any means.</em></p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Close
+                                            </button>
+                                            <a class="btn btn-danger" href="{% url 'scam_service' instance.id %}">Mark
+                                                as Scam!</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- DELETION MODAL -->
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Delete <b>{{ instance.name }}</b> by
+                                                <b>{{ instance.provider.full_name }}</b></h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure? The action can't be reverted.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Close
+                                            </button>
+                                            <a class="btn btn-danger " href="{% url 'delete_service' instance.id %}">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- SHARE MODAL -->
+                            <div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Share <b>{{ instance.name }}</b> by
+                                                <b>{{ instance.provider.full_name }}</b></h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Check out the following resource on LifeNest! <b>{{ instance.name }}</b>
+                                                by <b>{{ instance.provider.full_name }}</b>!</p>
+                                            <div class="social-links">
+                                                {% post_to_facebook object_or_url "Post to Facebook" %}
+                                                {% post_to_whatsapp object_or_url %}
+                                                {% post_to_twitter "Check out the {{ instance.name }} on LifeNest!" object_or_url %}
+                                                {% post_to_linkedin object_or_url %}
+                                                {% send_email "{{ instance.name }} on LifeNest!" "Check out the {{ instance.name }} on LifeNest!" object_or_url "Share via email" %}
+                                                {% post_to_reddit "Check out the {{ instance.name }} on LifeNest!" object_or_url %}
+                                                {% post_to_telegram "Check out the {{ instance.name }} on LifeNest!" object_or_url %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

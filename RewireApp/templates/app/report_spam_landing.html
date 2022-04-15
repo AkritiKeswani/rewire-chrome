@@ -1,0 +1,213 @@
+{% extends 'covid/base.html' %}
+
+{% load static %}
+{% load define_actions %}
+
+{% block content %}
+    <section class="align-items-center" style="margin-top: 20px;">
+        <div class="wrapper rounded bg-white">
+            <div class="h3">Report Spam Calls</div>
+            <p class="text-black-50" style="padding-top: 20px;">Are you a supplier? Do you suspect spam call inquiries
+                for your postings? You can <a href="{% url 'new_spam' %}">report it here.</a></p>
+            <p class="text-black-50">You can check the database below to see if your suspected spam callers have been
+                reported by other people too. View the details to read about other spam experiences.</p>
+            <div class="form">
+                <div id="resource_list_grid" class="ag-theme-alpine" style="width: 100%; height: 100vh;"></div>
+            </div>
+        </div>
+
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Poppins', sans-serif
+            }
+
+            body {
+                background: linear-gradient(45deg, #ba5370, #f4e2d8);
+                min-height: 100vh;
+            }
+
+            body::-webkit-scrollbar {
+                display: none
+            }
+
+            .wrapper {
+                max-width: 95%;
+                margin: 40px auto;
+                padding: 30px 45px;
+                box-shadow: 5px 25px 35px #3535356b
+            }
+
+            .wrapper label {
+                display: block;
+                padding-bottom: 0.2rem
+            }
+
+            .wrapper .form .row {
+                padding: 0.6rem 0
+            }
+
+            .wrapper .form .row .form-control {
+                box-shadow: none
+            }
+
+            .wrapper .form .option {
+                position: relative;
+                padding-left: 20px;
+                cursor: pointer
+            }
+
+            .wrapper .form .option input {
+                opacity: 0
+            }
+
+            .wrapper .form .checkmark {
+                position: absolute;
+                top: 1px;
+                left: 0;
+                height: 20px;
+                width: 20px;
+                border: 1px solid #bbb;
+                border-radius: 50%
+            }
+
+            .wrapper .form .option input:checked ~ .checkmark:after {
+                display: block
+            }
+
+            .wrapper .form .option:hover .checkmark {
+                background: #f3f3f3
+            }
+
+            .wrapper .form .option .checkmark:after {
+                content: "";
+                width: 10px;
+                height: 10px;
+                display: block;
+                background: linear-gradient(45deg, #ba5370, #f4e2d8);
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                border-radius: 50%;
+                transform: translate(-50%, -50%) scale(0);
+                transition: 300ms ease-in-out 0s
+            }
+
+            .wrapper .form .option input[type="radio"]:checked ~ .checkmark {
+                background: #fff;
+                transition: 300ms ease-in-out 0s
+            }
+
+            .wrapper .form .option input[type="radio"]:checked ~ .checkmark:after {
+                transform: translate(-50%, -50%) scale(1)
+            }
+
+            .wrapper .form #resource_list_grid {
+                border-radius: 15px;
+                padding-top: 20px;
+            }
+
+            @media (max-width: 768.5px) {
+                .wrapper {
+                    margin: 30px
+                }
+
+                .wrapper .form .row {
+                    padding: 0
+                }
+            }
+
+            @media (max-width: 400px) {
+                .wrapper {
+                    padding: 25px;
+                    margin: 20px
+                }
+            }
+        </style>
+    </section>
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        //basic information about each column
+        var columnDefs = [
+            {
+                headerName: "Phone",
+                field: "phone",
+            },
+            {
+                headerName: "Last Reported",
+                field: "last_reported",
+                filter: "agDateColumnFilter",
+            },
+            {
+                headerName: "Spam Count",
+                field: "upvotes",
+            },
+            {
+                headerName: "Details",
+                field: "details",
+                cellRenderer: function (params) {
+                    let full_url = "/view_spam/" + params.value
+                    return '<a href=' + full_url + '>View History</a>'
+                }
+            }
+        ];
+
+        let rowData = [
+            {% for report in spam %}
+                {
+                    phone: "{{ report.phone }}",
+                    last_reported: "{{ report.date_reported }}",
+                    upvotes: "{{ count|get_item:report.phone }}",
+                    details: "{{ report.id }}"
+                },
+            {% endfor %}
+        ];
+
+
+        var gridOptions = {
+            animateRows: true,
+            floatingFilter: true,
+            defaultColDef: {
+                filter: true,
+                sortable: true,
+                resizable: true,
+            },
+            columnDefs: columnDefs,
+            rowData: rowData,
+            onFirstDataRendered: onFirstDataRenderedDesktop
+        }
+
+        function onFirstDataRenderedDesktop(params) {
+            params.api.sizeColumnsToFit();
+        }
+
+        function onFirstDataRenderedMobile(params) {
+            params.columnApi.autoSizeAllColumns();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var eGridDiv = document.querySelector('#resource_list_grid');
+
+            if (window.innerWidth <= 770) {
+                // mobile
+                gridOptions.onFirstDataRendered = onFirstDataRenderedMobile
+            } else {
+                // dekstop
+                let tempColDef = gridOptions.defaultColDef;
+                tempColDef['flex'] = 1;
+                gridOptions.defaultColDef = tempColDef;
+                gridOptions.onFirstDataRendered = onFirstDataRenderedDesktop
+            }
+            new agGrid.Grid(eGridDiv, gridOptions);
+        })
+    </script>
+{% endblock %}
+
+

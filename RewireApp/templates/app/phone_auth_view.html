@@ -1,0 +1,85 @@
+{% extends 'covid/base.html' %}
+
+{% load static %}
+
+{% block header %}
+    <link rel="stylesheet" href='{% static 'css/auth_forms_style.css' %}'/>
+{% endblock %}
+
+{% block content %}
+    <section class="align-items-center" style="margin-top: 20px;">
+        <div class="wrapper rounded bg-white">
+            <p class="text-danger text-center"><b>You need to verify the phone number before accessing this part of the
+                platform.</b></p>
+            <p class="text-black-50 text-center">Phone verification helps us keep the database clean and more relevant
+                over time.</p>
+            <p class="text-danger text-center"><b>You are currently registered with {{ current_phone }}</b></p>
+            <p class="text-black-50 text-center" style="padding-bottom: 20px;">Don't have an access to your number
+                anymore? <a href="{% url 'change_phone' %}">Update it now.</a></p>
+            <div class="row" style="margin-top:10px; justify-content: center;">
+                <div id="firebaseui-auth-container"></div>
+                <div id="loader">Loading...</div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block script %}
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-auth.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+            apiKey: "AIzaSyBIqyEO50YHKn4jUgIHc9SLVZ4dWrqgCKo",
+            authDomain: "lifenest-315103.firebaseapp.com",
+            projectId: "lifenest-315103",
+            storageBucket: "lifenest-315103.appspot.com",
+            messagingSenderId: "131588041461",
+            appId: "1:131588041461:web:abc4a76243e93558afb3bc",
+            measurementId: "G-8D4RKXJQCK"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
+    <script>
+        var ui = new firebaseui.auth.AuthUI(firebase.auth());
+        ui.start('#firebaseui-auth-container', {
+            callbacks: {
+                signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+                    // User successfully signed in.
+                    // Return type determines whether we continue the redirect automatically
+                    // or whether we leave that to developer to handle.
+                    return true;
+                },
+                uiShown: function () {
+                    // The widget is rendered.
+                    // Hide the loader.
+                    document.getElementById('loader').style.display = 'none';
+                }
+            },
+            signInFlow: 'popup',
+            signInSuccessUrl: "{% url 'confirm_phone_auth' %}",
+            signInOptions: [
+                {
+                    provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+                    recaptchaParameters: {
+                        type: 'image', // 'audio'
+                        size: 'normal', // 'invisible' or 'compact'
+                        badge: 'bottomleft' //' bottomright' or 'inline' applies to invisible.
+                    },
+                    defaultCountry: 'IN',
+                }
+            ],
+            tosUrl: 'https://portal.termshub.io/lifenest.io/',
+            privacyPolicyUrl: 'https://portal.termshub.io/lifenest.io/',
+        });
+    </script>
+{% endblock %}
