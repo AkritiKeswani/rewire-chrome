@@ -19,9 +19,16 @@ from RewireApp.serializers import (
     UpdateUserSerializer,
 )
 
+from django.shortcuts import render
+
 logger = logging.getLogger(__name__)
 
-# Create your views here.
+# web app views
+def index(request):
+    return render(request, "app/base.html")
+
+
+# API views
 class CustomObtainTokenPairView(TokenObtainPairView):
     permission_classes = (AllowAny,)
     serializer_class = CustomTokenObtainPairSerializer

@@ -11,6 +11,7 @@ from RewireApp.views import (
     UpdateProfileView,
     LogoutView,
     LogoutAllView,
+    index,
 )
 
 # api routing
@@ -37,7 +38,8 @@ authpatterns = [
 ]
 
 urlpatterns = [
-    path("", include(router.urls)),
+    path("", index, name="index"),
+    path("api/", include(router.urls)),
     path("admin/", admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),  # new
 ] + authpatterns  # routes for the app
