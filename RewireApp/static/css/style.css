@@ -191,7 +191,7 @@ h6 {
   justify-content: space-between;
   padding: 10px 0 10px 30px;
   font-size: 14px;
-  color: #ffffff;
+  color: #dfc9a1;
   white-space: nowrap;
   transition: 0.3s;
 }
@@ -205,7 +205,7 @@ h6 {
 .navbar a:hover,
 .navbar .active,
 .navbar li:hover>a {
-  color: #ffca68;
+  color: #dfc9a1;
 }
 
 .navbar .getstarted {
@@ -217,7 +217,7 @@ h6 {
 }
 
 .navbar .getstarted:hover {
-  color: #fff;
+  color: #dfc9a1;
   background: #3194db;
 }
 
@@ -443,8 +443,8 @@ h6 {
   border-radius: 5px;
   transition: 0.5s;
   margin-top: 30px;
-  color: #fff;
-  background: #2487ce;
+  color: #124265;
+  background: #ffca68;
 }
 
 #hero .btn-get-started:hover {
@@ -459,7 +459,7 @@ h6 {
   padding: 50px 30px;
   position: relative;
   overflow: hidden;
-  background: #fff;
+  background: #124265;
   box-shadow: 0 0 29px 0 rgba(18, 66, 101, 0.08);
   transition: all 0.3s ease-in-out;
   border-radius: 8px;
@@ -470,10 +470,11 @@ h6 {
   font-weight: 700;
   margin-bottom: 15px;
   font-size: 18px;
+  color: #dfc9a1;
 }
 
 #hero .icon-box .title a {
-  color: #124265;
+  color: #dfc9a1;
   transition: 0.3s;
 }
 
@@ -481,6 +482,7 @@ h6 {
   font-size: 15px;
   line-height: 28px;
   margin-bottom: 0;
+  color: #dfc9a1;
 }
 
 #hero .icon-box .icon {
@@ -490,7 +492,7 @@ h6 {
   transition: all 0.3s ease-in-out;
   font-size: 36px;
   line-height: 1;
-  color: #2487ce;
+  color: #dfc9a1;
 }
 
 #hero .icon-box:hover {
@@ -498,7 +500,7 @@ h6 {
 }
 
 #hero .icon-box:hover .title a {
-  color: #2487ce;
+  color: #dfc9a1;
 }
 
 @media (min-width: 1024px) {
