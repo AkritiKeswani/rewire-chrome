@@ -1,4 +1,4 @@
-{% extends 'covid/base.html' %}
+{% extends 'app/base.html' %}
 
 {% load crispy_forms_tags %}
 {% load static %}
@@ -14,13 +14,18 @@
             <form class="form" method="post">
                 {% csrf_token %}
                 <div class="row">
-                    <div class="form-group col-md-4 mb-0">
+                    <div class="form-group col-md-6 mb-0">
                         {{ creation.username|as_crispy_field }}
                     </div>
-                    <div class="form-group col-md-4 mb-0">
+                    <div class="form-group col-md-6 mb-0">
+                        {{ creation.email|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6 mb-0">
                         {{ creation.password1|as_crispy_field }}
                     </div>
-                    <div class="form-group col-md-4 mb-0">
+                    <div class="form-group col-md-6 mb-0">
                         {{ creation.password2|as_crispy_field }}
                     </div>
                 </div>
@@ -32,29 +37,10 @@
                         {{ creation.last_name|as_crispy_field }}
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group col-md-6 mb-0">
-                        {{ participant.phone|as_crispy_field }}
-                    </div>
-                    <div class="form-group col-md-6 mb-0">
-                        {{ creation.email|as_crispy_field }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6 mb-0">
-                        {{ participant.state|as_crispy_field }}
-                    </div>
-                    <div class="form-group col-md-6 mb-0">
-                        {{ participant.city|as_crispy_field }}
-                    </div>
-                </div>
-                <div class="row">
-                    {{ participant.consent|as_crispy_field }}
-                </div>
                 <button class="btn btn-primary mt-3" type="submit">Sign Up</button>
             </form>
             <div class="text-left" style="padding-top: 10px">
-                <p>Already a user? <a href="{% url 'login' %}">Sign In.</a></p>
+                <p>Already a user? <a href="{% url 'app_auth_signin' %}">Sign In.</a></p>
             </div>
         </div>
     </section>

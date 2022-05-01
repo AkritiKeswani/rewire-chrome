@@ -100,12 +100,9 @@
                 <nav id="navbar" class="navbar">
                     <ul>
                         <li><span class="nav-link text-lg-left"><b>Hello {{ first_name }}</b></span></li>
-                        <li><a class="nav-link scrollto" href="{% url 'landing' %}">Resources</a></li>
-                        <li><a class="nav-link scrollto" href="{% url 'add_service' %}">Add Resource</a></li>
-                        <li><a class="nav-link scrollto" href="{% url 'edit_profile' %}">Edit Profile</a></li>
-                        <li><a class="nav-link scrollto text-danger" href="{% url 'spam_view_landing' %}">Report
-                            Spam</a></li>
-                        <li><a class="getstarted scrollto bg-danger" href="{% url 'logout' %}">Sign Out</a></li>
+                        <li><a class="nav-link scrollto" href="{% url 'app_landing' %}">Resources</a></li>
+                        <li><a class="nav-link scrollto" href="{% url 'app_update_profile' %}">Edit Profile</a></li>
+                        <li><a class="getstarted scrollto bg-danger" href="{% url 'app_auth_signout' %}">Sign Out</a></li>
                     </ul>
                     <i class="bi bi-list mobile-nav-toggle"></i>
                 </nav><!-- .navbar -->
@@ -113,12 +110,12 @@
                 <nav id="navbar" class="navbar">
                     <ul>
                         <li><a class="nav-link scrollto" href="{% url 'index' %}#hero">Home</a></li>
-                        <li><a class="nav-link scrollto" href="{% url 'index' %}">Resources</a></li>
-                        <li><a class="nav-link scrollto" href="{% url 'index' %}#stats">Stats</a></li>
+                        <li><a class="nav-link scrollto" href="{% url 'index' %}#stats">Statistics</a></li>
                         <li><a class="nav-link scrollto" href="{% url 'index' %}#faq">FAQ</a></li>
                         <li><a class="nav-link scrollto" href="{% url 'index' %}#contact">Contact</a></li>
-                        <li><a class="nav-link scrollto" href="{% url 'index' %}">Sign In</a></li>
-                        <li><a class="getstarted scrollto" href="{% url 'index' %}">Sign Up</a></li>
+                        <li><a class="nav-link scrollto" href="{% url 'index' %}#contact">Chrome Extension</a></li>
+                        <li><a class="nav-link scrollto" href="{% url 'app_auth_signin' %}">Sign In</a></li>
+                        <li><a class="getstarted scrollto" href="{% url 'app_auth_signup' %}">Sign Up</a></li>
                     </ul>
                     <i class="bi bi-list mobile-nav-toggle"></i>
                 </nav><!-- .navbar -->
@@ -428,32 +425,34 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-3 col-md-6 footer-contact">
-                        <h3><strong><b>Life Nest</b></strong></h3>
+                        <h3><strong><b>ReWire</b></strong></h3>
                         <p>
                             {#                                A108 Adam Street <br>#}
                             {#                                New York, NY 535022<br>#}
                             {#                                United States <br><br>#}
                             <strong>Email:</strong> <a href="mailto:admin@lifenest.io"
-                                                       target="_blank">admin@lifenest.io</a><br>
+                                                       target="_blank">admin@r3wire.tech</a><br>
                         </p>
                     </div>
                     <div class="col-lg-5 col-md-6 footer-links">
                         <h4>Useful Links</h4>
                         <ul>
                             <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="https://portal.termshub.io/lifenest.io/"
-                                                                       target="_blank">Terms of service</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="https://portal.termshub.io/lifenest.io/"
-                                                                       target="_blank">Privacy policy</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#"
+                                target="_blank">Chrome Extension</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="{% url 'app_auth_signin' %}"
+                                                                       target="_blank">Sign In</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="{% url 'app_auth_signup' %}"
+                                                                       target="_blank">Sign Up</a></li>
                         </ul>
                     </div>
 
                     <div class="col-lg-4 col-md-6 footer-newsletter">
                         <h4>Connect with us</h4>
                         <div class="social-links">
-                            <a href="https://www.instagram.com/lifenest.io/" target="_blank" class="instagram"><i
+                            <a href="#" target="_blank" class="instagram"><i
                                     class="bx bxl-instagram"></i></a>
-                            <a href="mailto:admin@lifenest.io" target="_blank" class="google-plus"><i
+                            <a href="mailto:admin@r3wire.tech" target="_blank" class="google-plus"><i
                                     class="bx bx-envelope"></i></a>
                         </div>
                     </div>
@@ -463,8 +462,8 @@
         <div class="container d-md-flex py-4">
             <div class="me-md-auto text-center text-md-start">
                 <div class="copyright">
-                    &copy; Copyright 2021. All Rights Reserved by <strong><span><a href="https://www.lifenest.io"
-                                                                                   target="_blank">Life Nest</a></span></strong>.
+                    &copy; Copyright 2021. All Rights Reserved by <strong><span><a href="https://www.r3wire.tech"
+                                                                                   target="_blank">ReWire</a></span></strong>.
                 </div>
             </div>
             <div class="credits text-center text-md-right pt-3 pt-md-0">
@@ -479,8 +478,8 @@
 {% else %}
     <footer class="page-footer font-small border-top" style="margin-top: 20px; color: black;">
         <div class="footer-copyright text-center py-3">
-            &copy; Copyright 2021. All Rights Reserved by <strong><span><a href="https://www.lifenest.io"
-                                                                           target="_blank" style="color: black;"><u>Life Nest</u></a></span></strong>.
+            &copy; Copyright 2021. All Rights Reserved by <strong><span><a href="https://www.r3wire.tech"
+                                                                           target="_blank" style="color: black;"><u>Re Wire</u></a></span></strong>.
         </div>
     </footer>
 {% endif %}
