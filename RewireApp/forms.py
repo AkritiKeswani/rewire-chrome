@@ -20,6 +20,26 @@ class CustomUserCreationForm(UserCreationForm):
         )
 
 
+class EmailForm(forms.ModelForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ("email",)
+
+
+class AddWebsiteForm(forms.Form):
+    add_website = forms.CharField(max_length=1000)
+
+
+class DeleteWebsiteForm(forms.Form):
+    delete_website = forms.CharField(max_length=1000)
+
+
+class AddMoneyForm(forms.Form):
+    balance = forms.IntegerField(min_value=1)
+
+
 class AuthenticationForm(forms.Form):
     username = forms.CharField(max_length=150, required=True)
     password = forms.CharField(widget=forms.PasswordInput, required=True)

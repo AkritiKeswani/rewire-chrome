@@ -99,8 +99,10 @@
             {% if logged_in %}
                 <nav id="navbar" class="navbar">
                     <ul>
-                        <li><span class="nav-link text-lg-left"><b>Hello {{ first_name }}</b></span></li>
-                        <li><a class="nav-link scrollto" href="{% url 'app_landing' %}">Resources</a></li>
+                        <li><span class="nav-link text-lg-left"><b>Hello {{ first_name }}! (Current Balance: {{ current_balance }} USD)</b></span></li>
+                        <li><a class="nav-link scrollto" href="{% url 'index' %}">Home</a></li>
+                        <li><a class="nav-link scrollto" href="{% url 'app_add_friend' %}">Add Friend</a></li>
+                        <li><a class="nav-link scrollto" href="{% url 'app_add_money' %}">Add Balance</a></li>
                         <li><a class="nav-link scrollto" href="{% url 'app_update_profile' %}">Edit Profile</a></li>
                         <li><a class="getstarted scrollto bg-danger" href="{% url 'app_auth_signout' %}">Sign Out</a></li>
                     </ul>

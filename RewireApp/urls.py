@@ -20,10 +20,18 @@ from RewireApp.views import (
     update_password,
     update_profile,
     delete_data,
+    add_money,
+    add_friend,
+    BlocklistViewSet,
+    FriendViewSet,
+    FlowViewSet,
 )
 
 # api routing
 router = DefaultRouter()
+router.register(r"blocklist", BlocklistViewSet, basename="Blocklist")
+router.register(r"friend", FriendViewSet, basename="Friend")
+router.register(r"flow", FlowViewSet, basename="Flow")
 
 
 # password reset
@@ -57,6 +65,8 @@ web = [
     path("app/update_profile/", update_profile, name="app_update_profile"),
     path("app/password_change/", update_password, name="app_password_change"),
     path("app/delete_data/", delete_data, name="app_delete_data"),
+    path("app/add_money/", add_money, name="app_add_money"),
+    path("app/add_friend/", add_friend, name="app_add_friend"),
 ]
 
 

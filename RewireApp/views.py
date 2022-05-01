@@ -1,4 +1,7 @@
+from ast import Delete
 import logging
+import datetime
+from black import re
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
@@ -6,7 +9,9 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import transaction
-from django.shortcuts import redirect, render, get_object_or_404
+from django.dispatch import receiver
+from django.shortcuts import redirect, render
+from django.db.models import Q
 from django.views.decorators.debug import sensitive_post_parameters, sensitive_variables
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -18,14 +23,30 @@ from rest_framework_simplejwt.token_blacklist.models import (
 )
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import status
 
-from RewireApp.forms import AuthenticationForm, CustomUserCreationForm, UpdateUserForm
+from RewireApp.forms import (
+    AuthenticationForm,
+    CustomUserCreationForm,
+    UpdateUserForm,
+    AddMoneyForm,
+    EmailForm,
+    AddWebsiteForm,
+    DeleteWebsiteForm,
+)
 from RewireApp.serializers import (
     ChangePasswordSerializer,
     CustomTokenObtainPairSerializer,
+    FlowSerializer,
     RegisterSerializer,
     UpdateUserSerializer,
+    BlocklistSerializer,
+    FriendSerializer,
 )
+from RewireApp.models import Participant, Blocklist, Friend, Flow
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +60,52 @@ def index(request):
 
 @login_required()
 def landing(request):
-    return render(request, "app/landing.html", context={})
+    blocked_websites = Blocklist.objects.filter(user__user=request.user).all()
+    focus_sessions = (
+        Flow.objects.filter(user__user=request.user).order_by("start_time").all()
+    )
+
+    friends_q = Friend.objects.filter(
+        Q(sender__pk=request.user.pk) | Q(receiver__pk=request.user.pk)
+    ).all()
+    friends = list()
+    for f in friends_q:
+        if f.sender.user.pk == request.user.pk:
+            friends.append(f.receiver)
+        elif f.receiver.user.pk == request.user.pk:
+            friends.append(f.sender)
+    if request.method == "POST":
+        add_website_form = AddWebsiteForm(request.POST or None)
+        delete_website_form = DeleteWebsiteForm(request.POST or None)
+
+        if add_website_form.is_valid():
+            blocklist_instance = Blocklist.objects.create(
+                user=request.user, website=add_website_form.cleaned_data.get("website")
+            )
+            blocklist_instance.save(force_insert=True)
+
+        if delete_website_form.is_valid():
+            blocklist_instance = Blocklist.objects.filter(
+                user=request.user, website=add_website_form.cleaned_data.get("website")
+            ).first()
+            if blocklist_instance:
+                blocklist_instance.delete()
+
+    else:
+        add_website_form = AddWebsiteForm(request.POST or None)
+        delete_website_form = DeleteWebsiteForm(request.POST or None)
+
+    return render(
+        request,
+        "app/landing.html",
+        context={
+            "blocked_websites": blocked_websites,
+            "focus_sessions": focus_sessions,
+            "friends": friends,
+            "add_website_form": add_website_form,
+            "delete_website_form": delete_website_form,
+        },
+    )
 
 
 @sensitive_variables("user_instance")
@@ -54,6 +120,8 @@ def signup(request):
 
         if creation_form.is_valid():
             user_instance = creation_form.save()
+            participant = Participant.objects.create(user=user_instance)
+            participant.save(force_insert=True)
             login(request, user_instance)
             messages.success(request, "Your account was created successfully.")
             return redirect("app_landing")
@@ -66,7 +134,7 @@ def signup(request):
     return render(
         request,
         "auth/signup.html",
-        {"page_name": "Life Nest | Sign Up", "creation": creation_form},
+        {"page_name": "ReWire | Sign Up", "creation": creation_form},
     )
 
 
@@ -82,7 +150,10 @@ def update_password(request):
             )
 
             if password_change_form.is_valid():
+                participant_instance = Participant.objects.get(user=request.user)
                 user = password_change_form.save()
+                participant_instance.user = user
+                participant_instance.save()
                 update_session_auth_hash(request, user)
                 messages.success(request, "Your password was successfully changed.")
                 return redirect("landing")
@@ -96,7 +167,7 @@ def update_password(request):
             request,
             "auth/change_password.html",
             {
-                "page_name": "Life Nest | Password Change",
+                "page_name": "ReWire | Password Change",
                 "password_change": password_change_form,
             },
         )
@@ -107,17 +178,90 @@ def update_password(request):
 @transaction.atomic
 @sensitive_post_parameters()
 @login_required
+def add_money(request):
+    if request.user.is_authenticated and request.user.is_active:
+        add_money_form = AddMoneyForm(request.POST or None)
+        if request.POST and add_money_form.is_valid():
+            participant_instance = Participant.objects.get(user=request.user)
+            participant_instance.money = add_money_form.cleaned_data.get("balance")
+            participant_instance.save()
+            return redirect("index")
+        else:
+            return render(
+                request,
+                "app/add_money.html",
+                {"page_name": "ReWire | Add Balance", "money": add_money_form},
+            )
+    else:
+        return redirect("index")
+
+
+@transaction.atomic
+@sensitive_post_parameters()
+@login_required()
+def add_friend(request):
+    if request.user.is_authenticated and request.user.is_active:
+        add_friend_form = EmailForm(request.POST or None)
+        if request.POST and add_friend_form.is_valid():
+            friend_sender_instance = Participant.objects.get(user=request.user)
+            friend_receiver_instance = Participant.objects.get(
+                user__email=add_friend_form.cleaned_data.get("email")
+            )
+            friend_object_instance = Friend.objects.create(
+                sender=friend_sender_instance, receiver=friend_receiver_instance
+            )
+            friend_object_instance.save()
+            return redirect("index")
+        else:
+            return render(
+                request,
+                "app/add_friend.html",
+                {"page_name": "ReWire | Add a Friend", "friend": add_friend_form},
+            )
+    else:
+        return redirect("index")
+
+
+@transaction.atomic
+@sensitive_post_parameters()
+@login_required
 def update_profile(request):
     if request.user.is_authenticated and request.user.is_active:
+        add_friend_form = EmailForm(request.POST or None)
+        add_money_form = AddMoneyForm(request.POST or None)
         user_update_form = UpdateUserForm(request.POST or None, instance=request.user)
-        if request.POST and user_update_form.is_valid():
+        if (
+            request.POST
+            and user_update_form.is_valid()
+            and add_friend_form.is_valid()
+            and add_money_form.is_valid()
+        ):
+            # friend form
+            friend_sender_instance = Participant.objects.get(user=request.user)
+            friend_receiver_instance = Participant.objects.get(
+                user__email=add_friend_form.cleaned_data.get("email")
+            )
+            friend_object_instance = Friend.objects.create(
+                sender=friend_sender_instance, receiver=friend_receiver_instance
+            )
+            friend_object_instance.save()
+            # user update form
+            participant_instance = Participant.objects.get(user=request.user)
             user_instance = user_update_form.save()
+            participant_instance.user = user_instance
+            participant_instance.money = add_money_form.cleaned_data.get("balance")
+            participant_instance.save()
             return redirect("index")
         else:
             return render(
                 request,
                 "app/edit_profile.html",
-                {"page_name": "Life Nest | Edit Profile", "creation": user_update_form},
+                {
+                    "page_name": "ReWire | Edit Profile",
+                    "creation": user_update_form,
+                    "money": add_money_form,
+                    "friend": add_friend_form,
+                },
             )
     else:
         return redirect("index")
@@ -165,11 +309,105 @@ def signin(request):
     return render(
         request,
         "auth/login.html",
-        {"page_name": "Life Nest | Sign In", "authentication": authentication_form},
+        {"page_name": "ReWire | Sign In", "authentication": authentication_form},
     )
 
 
 # API views
+class FlowViewSet(ModelViewSet):
+
+    queryset = Friend.objects.all()
+    serializer_class = FlowSerializer
+    permission_classes = (IsAuthenticated,)
+
+    @action(detail=False, methods=["post"])
+    def new_flow(self, request):
+        participant_instance = Participant.objects.get(user__pk=request.user.pk)
+        accountability_dude_instance = Participant.objects.filter(
+            user__username=request.data.get("accountable_dude")
+        ).first()
+        if not accountability_dude_instance:
+            return Response(
+                "'accountability_dude' not found.", status.HTTP_400_BAD_REQUEST
+            )
+
+        flow_instance = Flow.objects.create(
+            user=participant_instance,
+            accountable_dude=accountability_dude_instance,
+            start_time=request.data.get("start_time"),
+            end_time=request.data.get("end_time"),
+            money=int(request.data.get("money")),
+            success=True if request.data.get("success") == "true" else False,
+        )
+        flow_instance.save()
+        # update money
+        curr_money = participant_instance.money
+        if not flow_instance.success:
+            participant_instance.money = max(0, (curr_money - flow_instance.money))
+            participant_instance.save()
+        resp = {
+            "user": request.user.username,
+            "accountable_dude": flow_instance.accountable_dude.user.username,
+            "start_time": str(flow_instance.start_time),
+            "end_time": str(flow_instance.end_time),
+            "money": flow_instance.money,
+            "success": flow_instance.success,
+            "remaining_money": participant_instance.money,
+        }
+        return Response(resp, status.HTTP_201_CREATED)
+
+
+class BlocklistViewSet(ReadOnlyModelViewSet):
+
+    queryset = Blocklist.objects.all()
+    serializer_class = BlocklistSerializer
+    permission_classes = (IsAuthenticated,)
+
+    @action(detail=False, methods=["get"])
+    def get_blocked(self, request):
+        data = self.queryset.filter(user__pk=request.user.pk)
+        serializer = self.get_serializer(data, many=True)
+        return Response(serializer.data)
+
+
+class FriendViewSet(ReadOnlyModelViewSet):
+
+    queryset = Friend.objects.all()
+    serializer_class = FriendSerializer
+    permission_classes = (IsAuthenticated,)
+
+    @action(detail=False, methods=["get"])
+    def get_friends(self, request):
+        data = self.queryset.filter(
+            Q(sender__pk=request.user.pk) | Q(receiver__pk=request.user.pk)
+        )
+        serialized = list()
+        for f in data:
+            if f.sender.user.pk == request.user.pk:
+                serialized.append(
+                    {
+                        "user_id": f.receiver.user.pk,
+                        "username": f.receiver.user.username,
+                        "email": f.receiver.user.email,
+                        "first_name": f.receiver.user.first_name,
+                        "last_name": f.receiver.user.last_name,
+                        "full_name": f.receiver.full_name,
+                    }
+                )
+            elif f.receiver.user.pk == request.user.pk:
+                serialized.append(
+                    {
+                        "user_id": f.sender.user.pk,
+                        "username": f.sender.user.username,
+                        "email": f.sender.user.email,
+                        "first_name": f.sender.user.first_name,
+                        "last_name": f.sender.user.last_name,
+                        "full_name": f.sender.full_name,
+                    }
+                )
+        return Response(serialized)
+
+
 class CustomObtainTokenPairView(TokenObtainPairView):
     permission_classes = (AllowAny,)
     serializer_class = CustomTokenObtainPairSerializer
