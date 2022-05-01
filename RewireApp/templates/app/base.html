@@ -99,7 +99,7 @@
             {% if logged_in %}
                 <nav id="navbar" class="navbar">
                     <ul>
-                        <li><span class="nav-link text-lg-left"><b>Hello {{ first_name }}! (Current Balance: {{ current_balance }} USD)</b></span></li>
+                        <li style="color: #ffba56;"><span class="nav-link text-lg-left"><b>Hello {{ first_name }}! (Current Balance: {{ current_balance }} USD)</b></span></li>
                         <li><a class="nav-link scrollto" href="{% url 'index' %}">Home</a></li>
                         <li><a class="nav-link scrollto" href="{% url 'app_add_friend' %}">Add Friend</a></li>
                         <li><a class="nav-link scrollto" href="{% url 'app_add_money' %}">Add Balance</a></li>
@@ -115,7 +115,7 @@
                         <!-- <li><a class="nav-link scrollto" href="{% url 'index' %}#stats">Statistics</a></li> -->
                         <li><a class="nav-link scrollto" href="{% url 'index' %}#faq">FAQ</a></li>
                         <li><a class="nav-link scrollto" href="{% url 'index' %}#contact">Contact</a></li>
-                        <li><a class="nav-link scrollto" href="{% url 'index' %}#contact">Chrome Extension</a></li>
+                        <li><a class="nav-link scrollto" href="https://cs.drexel.edu/~vck29/rewire.zip">Chrome Extension</a></li>
                         <li><a class="nav-link scrollto" href="{% url 'app_auth_signin' %}">Sign In</a></li>
                         <li><a class="getstarted scrollto" href="{% url 'app_auth_signup' %}">Sign Up</a></li>
                     </ul>
@@ -138,7 +138,7 @@
                     </div>
                 </div>
                 <div class="text-center">
-                    <a href="{% url 'index' %}" class="btn-get-started scrollto">Get Started</a>
+                    <a href="{% url 'app_auth_signup' %}" class="btn-get-started scrollto">Get Started</a>
                 </div>
 
                 <div class="row icon-boxes">
@@ -411,15 +411,15 @@
                             {#                                3675 Market St 10th floor <br>#}
                             {#                                Philadelphia, PA 19104<br>#}
                             {#                                United States <br><br>#}
-                            <strong>Email:</strong> <a href="ark365@drexel.edu"
-                                                       target="_blank">admin@r3wire.tech</a><br>
+                            <strong>Email:</strong> <a href="mailto:ark365@drexel.edu"
+                                                       target="_blank" style="color: blue;">admin@r3wire.tech</a><br>
                         </p>
                     </div>
                     <div class="col-lg-5 col-md-6 footer-links">
                         <h4>Useful Links</h4>
                         <ul>
                             <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#"
+                            <li><i class="bx bx-chevron-right"></i> <a href="https://cs.drexel.edu/~vck29/rewire.zip"
                                 target="_blank">Chrome Extension</a></li>
                             <li><i class="bx bx-chevron-right"></i> <a href="{% url 'app_auth_signin' %}"
                                                                        target="_blank">Sign In</a></li>
@@ -444,7 +444,7 @@
             <div class="me-md-auto text-center text-md-start">
                 <div class="copyright">
                     &copy; Copyright 2021. All Rights Reserved by <strong><span><a href="https://www.r3wire.tech"
-                                                                                   target="_blank">ReWire</a></span></strong>.
+                                                                                   target="_blank" style="color: black;">ReWire</a></span></strong>.
                 </div>
             </div>
             <div class="credits text-center text-md-right pt-3 pt-md-0">
@@ -452,7 +452,7 @@
                 <!-- You can delete the links only if you purchased the pro version. -->
                 <!-- Licensing information: https://bootstrapmade.com/license/ -->
                 <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/onepage-multipurpose-bootstrap-template/ -->
-                Designed by <a href="https://bootstrapmade.com/" target="_blank">BootstrapMade</a>
+                Designed by <a href="https://bootstrapmade.com/" target="_blank" style="color: black;">BootstrapMade</a>
             </div>
         </div>
     </footer><!-- End Footer -->

@@ -55,7 +55,9 @@ def index(request):
     if request.user.is_authenticated and request.user.is_active:
         return redirect("app_landing")
     else:
-        return render(request, "app/base.html", context={})
+        return render(
+            request, "app/base.html", context={"page_name": "ReWire | Welcome"}
+        )
 
 
 @login_required()
@@ -80,13 +82,15 @@ def landing(request):
 
         if add_website_form.is_valid():
             blocklist_instance = Blocklist.objects.create(
-                user=request.user, website=add_website_form.cleaned_data.get("website")
+                user=Participant.objects.get(user=request.user),
+                website=add_website_form.cleaned_data.get("add_website"),
             )
             blocklist_instance.save(force_insert=True)
 
         if delete_website_form.is_valid():
             blocklist_instance = Blocklist.objects.filter(
-                user=request.user, website=add_website_form.cleaned_data.get("website")
+                user=Participant.objects.get(user=request.user),
+                website=add_website_form.cleaned_data.get("delete_website"),
             ).first()
             if blocklist_instance:
                 blocklist_instance.delete()
@@ -99,6 +103,7 @@ def landing(request):
         request,
         "app/landing.html",
         context={
+            "page_name": "ReWire | Welcome",
             "blocked_websites": blocked_websites,
             "focus_sessions": focus_sessions,
             "friends": friends,
