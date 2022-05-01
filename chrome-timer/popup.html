@@ -3,56 +3,98 @@
 
 <head>
 <script src="popup.js"></script>
+<script src="lib/jquery.min.js"></script>
+<!-- <script src="lib/bootstrap.min.js"></script> -->
 <link href="lib/bootstrap.min.css" rel="stylesheet" media="screen">
 
 <style>
-body {min-width: 240px;}
-#display, #settings {margin-top: 4px;}
+body {padding-top: 20px; width: 270px;}
+header {padding: 0 20px;}
+#login, #display, #settings {margin-top: 20px;}
 #modify {margin-bottom: 4px;}
+#wrongPassword {margin-top: 20px; display: none;}
+.container-fluid {
+    padding: 0;
+}
+.well {
+    margin-bottom: 0;
+}
+form {
+    margin: 0;
+}
 </style>
 
 </head>
 
 
 <body>
+
+<header>
+    <img src="https://i.ibb.co/f2zsQrM/My-project.png" alt="" id="logo">
+</header>
 <div class="container-fluid">
 
-    <div id="display" class="row-fluid">
+    <div id="login" class="row-fluid">
         <div class="span12">
-            <div class="progress progress-striped active progress-success progress-large">
-                <div class="bar" id="bar" style="width: 100%;"></div>
+            <div class="well" name="loginForm">
+                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter username">
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                <button type="submit" class="btn btn-primary" id="loginSubmit">Login</button>
+                <div class="alert alert-danger" role="alert" id="wrongPassword">Wrong password!</div>
+                <div class="alert alert-info" role="alert" style="margin-top: 10px;">Not a user yet? <b><a href="https://ccd8-2a00-79e1-abc-c11-e86b-e81e-76cf-cef3.ngrok.io/app/auth/signup/" target="_blank">Sign up!</a></b></div>
             </div>
         </div>
     </div>
 
-    <div id="modify" class="row-fluid">
+    <div id="display" class="row-fluid">
         <div class="span12">
-            <button id="cancel" class="offset1 btn btn-danger"><i class="icon-stop icon-white"></i></button>
-            <button id="resume" class="offset1 btn btn-success"><i class="icon-play icon-white"></i></button>
-            <button id="pause" class="offset1 btn btn-warning"><i class="icon-pause icon-white"></i></button>
-            <button id="restart" class="offset1 btn"><i class="icon-repeat"></i></button>
+            <p style="text-align: center; padding-bottom: 10px;">Stay focused, you got this!</p>
+            <div class="progress progress-striped active progress-success progress-large">
+                <div class="bar" id="bar" style="width: 100%;"></div>
+            </div>
+            <div class="alert alert-warning" role="alert" id="moneyOnLineOuter" style="margin-top: 10px;">Money on the line :  <b id="moneyOnLine"></b> $</div>
+            <div class="alert alert-success" role="alert" id="sucessAlert" style="display: none; margin-top: 10px;">You did it successfully, look at you go!</div>
+        </div>
+    </div>
+
+    <div id="modify" class="row-fluid">
+        <div class="span12" style="padding-bottom: 10px;">
+            <button id="cancel" class="offset1 btn btn-danger"><i class="icon-stop icon-white"></i>Stop the focus session? :(</button>
+            <button id="resume" class="offset1 btn btn-success"><i class="icon-play icon-white"></i>Resume</button>
+            <!-- <button id="pause" class="offset1 btn btn-warning"><i class="icon-pause icon-white"></i>Pause</button> -->
+            <!-- <button id="restart" class="offset1 btn"><i class="icon-repeat"></i>Restart</button> -->
+            <div class="alert alert-danger" role="alert" id="sureCancel" style="display: none; margin-top: 10px;">Are you really sure you want to stop <u>and lose the bet?</u> If yes, <b>click the above button again, but really - you can just work!</b></div>
         </div>
     </div>
 
     <div id="settings" class="row-fluid">
         <div class="span12">
             <form class="well" name="choices">
+                <p>Ready to start a focus session?</p>
+
+                <select class="form-select" aria-label="Default select example" id="friend-list">
+                    <option selected>Select accountability partner</option>
+                </select>
+                <input type="text" class="form-control" id="betAmount" aria-describedby="betAmount" placeholder="Amount to bet (Eg 5)">
+
                 <div class="radio"><input type="radio" name="radio" value="0" checked="checked">
-                <span id="s0">1</span>&nbsp;min</div>
+                <span id="s0">30</span>&nbsp;min</div>
 
                 <div class="radio"><input type="radio" name="radio" value="1">
-                <span id="s1">5</span>&nbsp;min</div>
+                <span id="s1">45</span>&nbsp;min</div>
 
                 <div class="radio"><input type="radio" name="radio" value="2">
-                <span id="s2">10</span>&nbsp;min</div>
+                <span id="s2">60</span>&nbsp;min</div>
 
                 <div class="radio"><input type="radio" name="radio" value="3">
-                <span id="s3">30</span>&nbsp;min</div>
+                <span id="s3">75</span>&nbsp;min</div>
 
                 <div>&nbsp;</div>
 
-                <button type="button" id="start" class="btn btn-success"><i class="icon-play icon-white"></i></button>
+                <button type="button" id="start" class="btn btn-success"><i class="icon-play icon-white"></i> Start a focus session</button>
                 <div id="swapper" style="float: right"><a href="#" id="wrench" class="btn"><i class="icon-wrench"></i></a></div>
+                <div class="alert alert-info" role="alert" style="margin-top: 10px;">View your past focus sessions <b><a href="https://ccd8-2a00-79e1-abc-c11-e86b-e81e-76cf-cef3.ngrok.io/app/auth/signup/" target="_blank">here.</a></b></div>
+                <p id="logout"><a href="#" class="link-primary">Log out?</a></p>
             </form>
         </div>
     </div>
