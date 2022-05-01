@@ -4,6 +4,17 @@ var interval;
 var setDate;
 var pauseDate;
 var alarmDate;
+var isLoggedIn; // persistant state to store if a user is logged in
+var accountabilityPartner; // persistant state to store the id of the accountability partner
+var accountabilityMoney; 
+var startTime;
+
+chrome.storage.local.get(['isLoggedIn'], function(result) {
+    if (result.isLoggedIn == "yes") {
+        isLoggedIn = true;
+    }
+    console.log(result);
+});
 
 var greenColor = [76, 187, 23, 255];
 var yellowColor = [250, 150, 0, 255];
@@ -52,6 +63,7 @@ function ringIn(tMillis)
     }, 1000);
 }
 
+// Should never get executed
 function pause()
 {
     pauseDate = new Date();
@@ -114,7 +126,9 @@ function ring()
         priority: 2
     }
     chrome.notifications.create("", options, didCreateNotification);
-
+    chrome.storage.local.get(['accessToken'], function(result) {
+        sendSuccessCall(result.accessToken);
+    });
     alarmSound.play();
     turnOff();
 }
@@ -136,4 +150,27 @@ function turnOff()
 function error()
 {
     alert("Please enter a number between 1 and 240.");
+}
+
+function sendSuccessCall(accessToken) {
+    let data = {'accountable_dude' : accountabilityPartner, 'start_time' : startTime/1000, 'end_time' : (+ new Date())/1000, 'money' : accountabilityMoney, 'success' : true};
+    (async () => {
+        const rawResponse = await fetch('https://ccd8-2a00-79e1-abc-c11-e86b-e81e-76cf-cef3.ngrok.io/authed/flow/new_flow/', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' +  accessToken
+
+          },
+          body: JSON.stringify(data)
+        });
+        const content = await rawResponse.json();
+
+        const responseStatus = rawResponse.status;
+
+        console.log(responseStatus);
+      
+        console.log(content);
+    })();
 }
