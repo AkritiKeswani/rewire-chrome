@@ -3,6 +3,48 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework.serializers import ModelSerializer, RelatedField, Serializer
+from RewireApp.models import Blocklist, Friend, Participant, Flow
+
+
+class ParticipantField(RelatedField):
+    def to_representation(self, value):
+        return value.user.username
+
+
+class UserSerializer:
+    class Meta:
+        model = User
+        fields = "__all__"
+
+
+class ParticipantSerializer(ModelSerializer):
+    user = UserSerializer
+
+    class Meta:
+        model = Participant
+        fields = "__all__"
+
+
+class BlocklistSerializer(ModelSerializer):
+    class Meta:
+        model = Blocklist
+        fields = "__all__"
+
+
+class FlowSerializer(ModelSerializer):
+    class Meta:
+        model = Flow
+        exclude = ["user"]
+
+
+class FriendSerializer(ModelSerializer):
+    sender = ParticipantField
+    receiver = ParticipantField
+
+    class Meta:
+        model = Friend
+        fields = "__all__"
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
