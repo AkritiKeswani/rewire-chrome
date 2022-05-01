@@ -2,7 +2,6 @@
 {% load static %}
 <html lang="en">
 <!-- Vivek Khimani -->
-
 <head>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZP48QNLJVW"></script>
@@ -21,36 +20,36 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>{{ page_name }}</title>
     <meta content="One-stop solution to help you focus while working on the Internet." name="description">
-    <meta content="focus,work,productivity,motivation,internet,chrome,extension" name="keywords">
+    <meta content="focus,work,productivity,motivation,internet,chrome,extension"
+          name="keywords">
     <meta content="Vivek Khimani" name="author">
     <meta content="Welcome - Life Nest" property="og:title">
     <meta content="One-stop solution to help you focus while working on the Internet." property="og:description">
     <meta content="{% static 'img/apple-touch-icon.png' %}" property="og:image">
 
     <!-- Favicons -->
-    <link rel="shortcut icon" type="image/x-icon" href='{% static ' img/favicon.png' %}' />
-    <link rel="icon" type="image/x-icon" href='{% static ' img/favicon.png' %}' />
-    <link rel="apple-touch-icon" type="image/x-icon" href='{% static ' img/favicon.png' %}' />
-    <link rel="apple-touch-startup-image" type="image/x-icon" href='{% static ' img/favicon.png' %}' />
+    <link rel="shortcut icon" type="image/x-icon" href='{% static 'img/favicon.png' %}'/>
+    <link rel="icon" type="image/x-icon" href='{% static 'img/favicon.png' %}'/>
+    <link rel="apple-touch-icon" type="image/x-icon" href='{% static 'img/favicon.png' %}'/>
+    <link rel="apple-touch-startup-image" type="image/x-icon" href='{% static 'img/favicon.png' %}'/>
 
     <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css" />
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css"/>
 
     <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
 
     <!-- Vendor CSS Files -->
-    <link rel="stylesheet" href='{% static ' vendor/aos/aos.css' %}' />
-    <link rel="stylesheet" href='{% static ' vendor/bootstrap/css/bootstrap.min.css' %}' />
-    <link rel="stylesheet" href='{% static ' vendor/bootstrap-icons/bootstrap-icons.css' %}' />
-    <link rel="stylesheet" href='{% static ' vendor/boxicons/css/boxicons.min.css' %}' />
-    <link rel="stylesheet" href='{% static ' vendor/glightbox/css/glightbox.min.css' %}' />
-    <link rel="stylesheet" href='{% static ' vendor/remixicon/remixicon.css' %}' />
-    <link rel="stylesheet" href='{% static ' vendor/swiper/swiper-bundle.min.css' %}' />
-    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css" />
+    <link rel="stylesheet" href='{% static 'vendor/aos/aos.css' %}'/>
+    <link rel="stylesheet" href='{% static 'vendor/bootstrap/css/bootstrap.min.css' %}'/>
+    <link rel="stylesheet" href='{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}'/>
+    <link rel="stylesheet" href='{% static 'vendor/boxicons/css/boxicons.min.css' %}'/>
+    <link rel="stylesheet" href='{% static 'vendor/glightbox/css/glightbox.min.css' %}'/>
+    <link rel="stylesheet" href='{% static 'vendor/remixicon/remixicon.css' %}'/>
+    <link rel="stylesheet" href='{% static 'vendor/swiper/swiper-bundle.min.css' %}'/>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css"/>
     <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
     <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-alpine.css">
 
@@ -58,7 +57,7 @@
     <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js"></script>
 
     <!-- Template Main CSS File -->
-    <link rel="stylesheet" href='{% static ' css/style.css' %}' />
+    <link rel="stylesheet" href='{% static 'css/style.css' %}'/>
 
     <!-- =======================================================
     * Template Name: OnePage - v4.1.0
@@ -69,75 +68,71 @@
     {% block header %}
     {% endblock %}
 </head>
-
 <body>
-    {% if messages %}
+{% if messages %}
     <div class="alert alert-info">
         <ul class="messages">
             {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
-                {{ message }}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                    {{ message }}
                 </li>
-                {% endfor %}
+            {% endfor %}
         </ul>
     </div>
-    {% endif %}
-    {% block nav %}
+{% endif %}
+{% block nav %}
     <header id="header" class="fixed-top">
         <div class="container d-flex align-items-center justify-content-between">
 
             <!-- <h1 class="logo"><a href="/">Helping Hand</a></h1> -->
             <!-- Uncomment below if you prefer to use an image logo -->
-            {# <a href="/" class="logo"><img src='{% static ' img/favicon.png' %}' width="50px" height="120px"
-                    alt="logo" class="img-fluid"></a>#}
+            {#            <a href="/" class="logo"><img src='{% static 'img/favicon.png' %}' width="50px" height="120px" alt="logo" class="img-fluid"></a>#}
             <a href="/" class="navbar-brand">
                 <!-- Logo Image -->
-                <img src='{% static ' img/favicon.png' %}' width="60" height="60" alt="logo"
-                    class="d-inline-block align-middle mr-2">
+                <img src='{% static 'img/favicon.png' %}' width="60" height="60" alt="logo"
+                     class="d-inline-block align-middle mr-2">
                 <!-- Logo Text -->
-                {# <span class="text-uppercase font-weight-bold">Life Nest</span>#}
+                {#                    <span class="text-uppercase font-weight-bold">Life Nest</span>#}
             </a>
 
             {% if logged_in %}
-            <nav id="navbar" class="navbar">
-                <ul>
-                    <li><span class="nav-link text-lg-left"><b>Hello {{ first_name }}</b></span></li>
-                    <li><a class="nav-link scrollto" href="{% url 'app_landing' %}">Resources</a></li>
-                    <li><a class="nav-link scrollto" href="{% url 'app_update_profile' %}">Edit Profile</a></li>
-                    <li><a class="getstarted scrollto bg-danger" href="{% url 'app_auth_signout' %}">Sign Out</a></li>
-                </ul>
-                <i class="bi bi-list mobile-nav-toggle"></i>
-            </nav><!-- .navbar -->
+                <nav id="navbar" class="navbar">
+                    <ul>
+                        <li><span class="nav-link text-lg-left"><b>Hello {{ first_name }}</b></span></li>
+                        <li><a class="nav-link scrollto" href="{% url 'app_landing' %}">Resources</a></li>
+                        <li><a class="nav-link scrollto" href="{% url 'app_update_profile' %}">Edit Profile</a></li>
+                        <li><a class="getstarted scrollto bg-danger" href="{% url 'app_auth_signout' %}">Sign Out</a></li>
+                    </ul>
+                    <i class="bi bi-list mobile-nav-toggle"></i>
+                </nav><!-- .navbar -->
             {% else %}
-            <nav id="navbar" class="navbar">
-                <ul>
-                    <li><a class="nav-link scrollto" href="{% url 'index' %}#hero">Home</a></li>
-                    <li><a class="nav-link scrollto" href="{% url 'index' %}#stats">Statistics</a></li>
-                    <li><a class="nav-link scrollto" href="{% url 'index' %}#faq">FAQ</a></li>
-                    <li><a class="nav-link scrollto" href="{% url 'index' %}#contact">Contact</a></li>
-                    <li><a class="nav-link scrollto" href="{% url 'index' %}#contact">Chrome Extension</a></li>
-                    <li><a class="nav-link scrollto" href="{% url 'app_auth_signin' %}">Sign In</a></li>
-                    <li><a class="getstarted scrollto" href="{% url 'app_auth_signup' %}">Sign Up</a></li>
-                </ul>
-                <i class="bi bi-list mobile-nav-toggle"></i>
-            </nav><!-- .navbar -->
+                <nav id="navbar" class="navbar">
+                    <ul>
+                        <li><a class="nav-link scrollto" href="{% url 'index' %}#hero">Home</a></li>
+                        <li><a class="nav-link scrollto" href="{% url 'index' %}#stats">Statistics</a></li>
+                        <li><a class="nav-link scrollto" href="{% url 'index' %}#faq">FAQ</a></li>
+                        <li><a class="nav-link scrollto" href="{% url 'index' %}#contact">Contact</a></li>
+                        <li><a class="nav-link scrollto" href="{% url 'index' %}#contact">Chrome Extension</a></li>
+                        <li><a class="nav-link scrollto" href="{% url 'app_auth_signin' %}">Sign In</a></li>
+                        <li><a class="getstarted scrollto" href="{% url 'app_auth_signup' %}">Sign Up</a></li>
+                    </ul>
+                    <i class="bi bi-list mobile-nav-toggle"></i>
+                </nav><!-- .navbar -->
             {% endif %}
         </div>
     </header><!-- End Header -->
-    {% endblock %}
+{% endblock %}
 
-    <main id="main">
-        {% block content %}
+<main id="main">
+    {% block content %}
         <!-- ======= Hero Section ======= -->
         <section id="hero" class="d-flex align-items-center">
             <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
                 <div class="row justify-content-center">
                     <div class="col-xl-7 col-lg-9 text-center">
-                        <h1>Life Nest</h1>
-                        <em>
-                            <h2>A platform for finding COVID-19 related resource leads in India</h2>
-                        </em>
+                        <h1>Rewire</h1>
+                        <em><h2>Rewire your brain while tapping into a flow state!</h2></em>
                     </div>
                 </div>
                 <div class="text-center">
@@ -146,40 +141,37 @@
 
                 <div class="row icon-boxes">
                     <div class="col-md-6 col-lg-4 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in"
-                        data-aos-delay="200">
+                         data-aos-delay="200">
                         <div class="icon-box">
                             <div class="icon"><i class="ri-stack-line"></i></div>
-                            <h4 class="title"><a href="{% url 'index' %}">Suppliers</a></h4>
-                            <p class="description">Have access to resources? Get started, sign up, and start
-                                contributing!</p>
+                            <h4 class="title"><a href="{% url 'index' %}">Evidence-Based</a></h4>
+                            <p class="description">Rewire is based on decades of neuroscience and psychology research on individuals that struggle to optimize their focus levels.</p>
                         </div>
                     </div>
 
                     <div class="col-md-6 col-lg-4 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in"
-                        data-aos-delay="300">
+                         data-aos-delay="300">
                         <div class="icon-box">
                             <div class="icon"><i class="ri-palette-line"></i></div>
-                            <h4 class="title"><a href="{% url 'index' %}">Requesters</a></h4>
-                            <p class="description">Looking for the resources? Sign up, and get full access to our
-                                database!</p>
+                            <h4 class="title"><a href="{% url 'index' %}">Monetary Incentives</a></h4>
+                            <p class="description">Make or lose money based on whether you are able to meet the challenge of sticking to your task.</p>
                         </div>
                     </div>
 
                     <div class="col-md-6 col-lg-4 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in"
-                        data-aos-delay="400">
+                         data-aos-delay="400">
                         <div class="icon-box">
                             <div class="icon"><i class="ri-command-line"></i></div>
-                            <h4 class="title"><a href="{% url 'index' %}">Scam Reports</a></h4>
-                            <p class="description">Report a supplier/caller and see if other users feel the same about
-                                them.</p>
+                            <h4 class="title"><a href="{% url 'index' %}">Seamless Chrome Extension Integration</a></h4>
+                            <p class="description">Download the extension and get started right away!</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section><!-- End Hero -->
 
-
-        <!-- ======= Frequently Asked Questions Section ======= -->
+<!-- 
+        ======= Frequently Asked Questions Section =======
         <section id="stats" class="faq section-bg">
             <div class="container" data-aos="fade-up">
                 <div class="section-title">
@@ -242,7 +234,7 @@
                 </div>
             </div>
         </section>
-
+ -->
 
         <!-- ======= Frequently Asked Questions Section ======= -->
         <section id="faq" class="faq section-bg">
@@ -256,10 +248,10 @@
 
                 <div class="faq-list">
                     <ul>
-                        <li data-aos="fade-up">
+                        <!-- <li data-aos="fade-up">
                             <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" class="collapse"
-                                data-bs-target="#faq-list-1">Who can sign up
-                                on LifeNest? <i class="bx bx-chevron-down icon-show"></i><i
+                                                                           data-bs-target="#faq-list-1">Who can sign up
+                            on LifeNest? <i class="bx bx-chevron-down icon-show"></i><i
                                     class="bx bx-chevron-up icon-close"></i></a>
                             <div id="faq-list-1" class="collapse show" data-bs-parent=".faq-list">
                                 <p>
@@ -267,78 +259,68 @@
                                     LifeNest.
                                 </p>
                             </div>
-                        </li>
+                        </li> -->
 
-                        <li data-aos="fade-up" data-aos-delay="100">
+                        <li data-aos="fade-up" data-aos-delay="100"> 
                             <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse"
-                                data-bs-target="#faq-list-2" class="collapsed">Why do I need to sign up?
-                                <i class="bx bx-chevron-down icon-show"></i><i
-                                    class="bx bx-chevron-up icon-close"></i></a>
+                                                                           data-bs-target="#faq-list-2"
+                                                                           class="collapsed">Do I need to make an account to start? 
+                            <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
                             <div id="faq-list-2" class="collapse" data-bs-parent=".faq-list">
                                 <p>
-                                    We require the users to sign up to minimize spam. All our users are required to
-                                    verify their phone numbers (using OTP) while signing up. This helps us to ensure
-                                    that only verified users can access the contact details of the providers. In case of
-                                    unethical activities, we can trace down the spammers using the phone numbers
-                                    provided while signing up.
+                                    In order to reap the benefits of using Rewire, it is definitely a must! This is simply because you can log in and track 
+                                    progress of your focus session, and see where it ends or breaks in the middle. For monetary incentives, in order to gain money from 
+                                    another user that you nominated, in the event of them stopping their focus session, this is necessary! 
                                 </p>
                             </div>
                         </li>
 
                         <li data-aos="fade-up" data-aos-delay="300">
                             <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse"
-                                data-bs-target="#faq-list-3" class="collapsed">What if a provider uploads
-                                fake resources? <i class="bx bx-chevron-down icon-show"></i><i
+                                                                           data-bs-target="#faq-list-3"
+                                                                           class="collapsed">Where can I find more information about the research associated with Rewire? <i class="bx bx-chevron-down icon-show"></i><i
                                     class="bx bx-chevron-up icon-close"></i></a>
                             <div id="faq-list-3" class="collapse" data-bs-parent=".faq-list">
                                 <p>
-                                    LifeNest is built with a purpose of making COVID-related resources more accessible.
-                                    As a result, we can't currently stop anyone from creating a posting. However, the
-                                    users can mark a resource as spam. Our team will actively monitor for the postings
-                                    with high spam counts and trace the provider.
+                                    There are some studies posted on PubMed/NCBI as well as universitiy webpages. Some of these include Multicosts of Multitasking (PubMed) 
+                                    and Why Are We Distracted by Social Media? Distraction Situations and Strategies, Reasons for Distraction, and Individual Differences (Frontiers in Psychology). 
                                 </p>
                             </div>
                         </li>
 
                         <li data-aos="fade-up" data-aos-delay="300">
                             <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse"
-                                data-bs-target="#faq-list-4" class="collapsed">What if I start receiving
-                                the spam calls after creating a resource posing? <i
-                                    class="bx bx-chevron-down icon-show"></i><i
-                                    class="bx bx-chevron-up icon-close"></i></a>
+                                                                           data-bs-target="#faq-list-4"
+                                                                           class="collapsed">How can Rewire help me stay focused on my work without switching between tasks on my laptop? <i
+                                    class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
                             <div id="faq-list-4" class="collapse" data-bs-parent=".faq-list">
                                 <p>
-                                    We certainly acknowledge that providers can be bugged by spam callers too. As a
-                                    result, we have provided a section - "Report Spam", where the providers can mark a
-                                    callers as spam. The section also provides a database which the providers can access
-                                    to see if the same caller has been marked as spam by other people.
+                                    Rewire tracks your sessions on the web whenever you enable the extension, so your progress in terms of time in a focus session is tracked, and when you switch to another tab, you are 
+                                    navigated to another page that motivates you to go back and complete your session, minimizing distractions such as social media sites! 
                                 </p>
                             </div>
                         </li>
 
                         <li data-aos="fade-up" data-aos-delay="400">
                             <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse"
-                                data-bs-target="#faq-list-5" class="collapsed">How is LifeNest different
-                                from other platforms? <i class="bx bx-chevron-down icon-show"></i><i
+                                                                           data-bs-target="#faq-list-5"
+                                                                           class="collapsed">What makes this different than other focus-enhancing applications out there? <i class="bx bx-chevron-down icon-show"></i><i
                                     class="bx bx-chevron-up icon-close"></i></a>
                             <div id="faq-list-5" class="collapse" data-bs-parent=".faq-list">
                                 <p>
-                                    LifeNest aims for easy sharing of the COVID-related resources in India. Currently,
-                                    there are a lot of resources/services for COVID patients in India, but it's hard to
-                                    find one, as they're spread across multiple platforms. Moreover, people are afraid
-                                    of being scammed/spammed while approaching the unknown people. LifeNest aims to
-                                    solve all these problems, by allowing people to add resources, organizing it into a
-                                    database, and only allowing verified users to access the database. Most importantly,
-                                    the verified users can report spam resources/callers on the platform which allows
-                                    others to estimate the reputation of the provider or a caller.
+                                    The mission of Rewire is not to sell some sophisticated pitch for a focus-enhancing application that is super complex to use! The motive here mainly is to emphasize 
+                                    how distractions minimize progress in any task we aim to complete, and sites such as social media platforms could not only affect work progress while in the middle of a task, but can also 
+                                    impact mental health detrimentally by making a person conscious about too many things at once. The goal here is to raise awareness and help you achieve your productvity goals through a seamlessly
+                                    integrated web extension that is low-maintenance! 
                                 </p>
                             </div>
                         </li>
 
-                        <li data-aos="fade-up" data-aos-delay="400">
+                        <!-- <li data-aos="fade-up" data-aos-delay="400">
                             <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse"
-                                data-bs-target="#faq-list-6" class="collapsed">Can LifeNest protect me
-                                from scammers? <i class="bx bx-chevron-down icon-show"></i><i
+                                                                           data-bs-target="#faq-list-6"
+                                                                           class="collapsed">Can LifeNest protect me
+                            from scammers? <i class="bx bx-chevron-down icon-show"></i><i
                                     class="bx bx-chevron-up icon-close"></i></a>
                             <div id="faq-list-6" class="collapse" data-bs-parent=".faq-list">
                                 <p>
@@ -350,21 +332,16 @@
                                     and keep out platform clean.
                                 </p>
                             </div>
-                        </li>
+                        </li> -->
 
                         <li data-aos="fade-up" data-aos-delay="400">
                             <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse"
-                                data-bs-target="#faq-list-7" class="collapsed">How can I contribute? <i
-                                    class="bx bx-chevron-down icon-show"></i><i
-                                    class="bx bx-chevron-up icon-close"></i></a>
+                                                                           data-bs-target="#faq-list-7"
+                                                                           class="collapsed">Ok, I am sold on this! What do I do next? <i
+                                class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
                             <div id="faq-list-7" class="collapse" data-bs-parent=".faq-list">
                                 <p>
-                                    The best way to contribute is to sign up! Even if you don't have access to resources
-                                    or don't need one, you can always sign up and browse/share the resources. That's the
-                                    best way to help someone who is in need of it. Moreover, you can apply to become a
-                                    volunteer and help us keep the data clean. Lastly, if you are a Django developer,
-                                    you can reach out to us and help us keep the platform running. We plan to
-                                    open-source this project in the near future.
+                                    By clicking on the "Get Started" button, you can navigate to the download page where you can install the extension and register to begin using the platform! 
                                 </p>
                             </div>
                         </li>
@@ -399,10 +376,7 @@
                 color: #fff;
             }
 
-            .card .card-statistic-3 .card-icon-large .fas,
-            .card .card-statistic-3 .card-icon-large .far,
-            .card .card-statistic-3 .card-icon-large .fab,
-            .card .card-statistic-3 .card-icon-large .fal {
+            .card .card-statistic-3 .card-icon-large .fas, .card .card-statistic-3 .card-icon-large .far, .card .card-statistic-3 .card-icon-large .fab, .card .card-statistic-3 .card-icon-large .fal {
                 font-size: 110px;
             }
 
@@ -417,14 +391,14 @@
                 opacity: 0.1;
             }
         </style>
-        {% endblock %}
-    </main>
-
-    {% block script %}
     {% endblock %}
+</main>
 
-    <section id="contact"></section>
-    {% if not logged_in %}
+{% block script %}
+{% endblock %}
+
+<section id="contact"></section>
+{% if not logged_in %}
     <footer id="footer">
         <div class="footer-top">
             <div class="container">
@@ -432,30 +406,31 @@
                     <div class="col-lg-3 col-md-6 footer-contact">
                         <h3><strong><b>ReWire</b></strong></h3>
                         <p>
-                            {# A108 Adam Street <br>#}
-                            {# New York, NY 535022<br>#}
-                            {# United States <br><br>#}
+                            {#                                A108 Adam Street <br>#}
+                            {#                                New York, NY 535022<br>#}
+                            {#                                United States <br><br>#}
                             <strong>Email:</strong> <a href="mailto:admin@lifenest.io"
-                                target="_blank">admin@r3wire.tech</a><br>
+                                                       target="_blank">admin@r3wire.tech</a><br>
                         </p>
                     </div>
                     <div class="col-lg-5 col-md-6 footer-links">
                         <h4>Useful Links</h4>
                         <ul>
                             <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#" target="_blank">Chrome Extension</a>
-                            </li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#"
+                                target="_blank">Chrome Extension</a></li>
                             <li><i class="bx bx-chevron-right"></i> <a href="{% url 'app_auth_signin' %}"
-                                    target="_blank">Sign In</a></li>
+                                                                       target="_blank">Sign In</a></li>
                             <li><i class="bx bx-chevron-right"></i> <a href="{% url 'app_auth_signup' %}"
-                                    target="_blank">Sign Up</a></li>
+                                                                       target="_blank">Sign Up</a></li>
                         </ul>
                     </div>
 
                     <div class="col-lg-4 col-md-6 footer-newsletter">
                         <h4>Connect with us</h4>
                         <div class="social-links">
-                            <a href="#" target="_blank" class="instagram"><i class="bx bxl-instagram"></i></a>
+                            <a href="#" target="_blank" class="instagram"><i
+                                    class="bx bxl-instagram"></i></a>
                             <a href="mailto:admin@r3wire.tech" target="_blank" class="google-plus"><i
                                     class="bx bx-envelope"></i></a>
                         </div>
@@ -467,7 +442,7 @@
             <div class="me-md-auto text-center text-md-start">
                 <div class="copyright">
                     &copy; Copyright 2021. All Rights Reserved by <strong><span><a href="https://www.r3wire.tech"
-                                target="_blank">ReWire</a></span></strong>.
+                                                                                   target="_blank">ReWire</a></span></strong>.
                 </div>
             </div>
             <div class="credits text-center text-md-right pt-3 pt-md-0">
@@ -479,42 +454,40 @@
             </div>
         </div>
     </footer><!-- End Footer -->
-    {% else %}
+{% else %}
     <footer class="page-footer font-small border-top" style="margin-top: 20px; color: black;">
         <div class="footer-copyright text-center py-3">
             &copy; Copyright 2021. All Rights Reserved by <strong><span><a href="https://www.r3wire.tech"
-                        target="_blank" style="color: black;"><u>Re Wire</u></a></span></strong>.
+                                                                           target="_blank" style="color: black;"><u>Re Wire</u></a></span></strong>.
         </div>
     </footer>
-    {% endif %}
+{% endif %}
 
-    {# <footer class="page-footer font-small border-top" style="margin-top: 20px; color: gray;">#}
-        {# <div class="footer-copyright text-center py-3">#}
-            {# Copyright &copy; 2021. All Rights Reserved by <a
-                href="https://vivekkhimani.github.io"><strong><span><b>Vivek Khimani</b>.</span></strong></a>#}
-            {# </div>#}
-        {# </footer>#}
+{#    <footer class="page-footer font-small border-top" style="margin-top: 20px; color: gray;">#}
+{#        <div class="footer-copyright text-center py-3">#}
+{#            Copyright &copy; 2021. All Rights Reserved by <a href="https://vivekkhimani.github.io"><strong><span><b>Vivek Khimani</b>.</span></strong></a>#}
+{#        </div>#}
+{#    </footer>#}
 
-    <!-- Vendor JS Files -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+<!-- Vendor JS Files -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
         integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
-    <script src="{% static 'vendor/aos/aos.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
-    <script src="{% static 'vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
-    <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
-    <script src="{% static 'vendor/purecounter/purecounter.js' %}"></script>
-    <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'vendor/aos/aos.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
+<script src="{% static 'vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+<script src="{% static 'vendor/purecounter/purecounter.js' %}"></script>
+<script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
 
-    <!-- Template Main JS File -->
-    <script src="{% static 'js/main.js' %}"></script>
+<!-- Template Main JS File -->
+<script src="{% static 'js/main.js' %}"></script>
 </body>
-
 </html>
