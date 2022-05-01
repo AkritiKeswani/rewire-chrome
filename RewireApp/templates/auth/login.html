@@ -1,4 +1,4 @@
-{% extends 'covid/base.html' %}
+{% extends 'app/base.html' %}
 
 {% load crispy_forms_tags %}
 {% load static %}
@@ -24,7 +24,7 @@
                 <button class="btn btn-primary mt-3" type="submit">Sign In</button>
             </form>
             <div class="text-left" style="padding-top: 10px; margin-top: 10px;">
-                <p>Don't have an account? <a href="{% url 'auth' %}">Sign up.</a></p>
+                <p>Don't have an account? <a href="{% url 'app_auth_signup' %}">Sign up.</a></p>
                 <p>Forgot Password? <a href="{% url 'password_reset' %}">Reset.</a></p>
             </div>
 
