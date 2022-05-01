@@ -1,3 +1,6 @@
+# IDE
+.vscode/
+
 # virtual env
 rewire_app/
 
